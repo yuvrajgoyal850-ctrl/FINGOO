@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 243 246 248; --surface: 255 255 255; --ink: 14 27 44; --muted: 96 111 130;
+  --line: 223 229 236; --brand: 13 110 103; --accent: 240 160 40;
+}
+.dark {
+  --bg: 8 15 25; --surface: 15 25 39; --ink: 232 238 245; --muted: 138 154 174;
+  --line: 30 44 62; --brand: 94 214 190; --accent: 245 176 65;
+}
+html, body { height: 100%; }
+body { @apply bg-bg text-ink font-sans antialiased; }
+:focus-visible { outline: 2px solid rgb(var(--brand)); outline-offset: 2px; }
+
+/* The AI orb: layered gradients that slowly drift */
+.orb {
+  border-radius: 9999px; position: relative; overflow: hidden;
+  background: radial-gradient(circle at 30% 30%, rgb(var(--accent)) 0%, transparent 55%),
+              radial-gradient(circle at 70% 70%, rgb(var(--brand)) 0%, transparent 60%),
+              rgb(var(--ink) / 0.9);
+  box-shadow: 0 0 40px -6px rgb(var(--brand) / 0.55), inset 0 0 14px rgb(255 255 255 / 0.25);
+  animation: orb-float 6s ease-in-out infinite;
+}
+.orb::after {
+  content: ""; position: absolute; inset: -30%;
+  background: conic-gradient(from 0deg, transparent, rgb(255 255 255 / 0.28), transparent 40%);
+  animation: orb-spin 9s linear infinite;
+}
+@keyframes orb-float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-4px) scale(1.04); } }
+@keyframes orb-spin { to { transform: rotate(360deg); } }
+.dot { animation: dot 1.2s infinite ease-in-out; }
+.dot:nth-child(2) { animation-delay: .15s; } .dot:nth-child(3) { animation-delay: .3s; }
+@keyframes dot { 0%,80%,100% { opacity: .25; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+@media (prefers-reduced-motion: reduce) { .orb, .orb::after, .dot { animation: none; } }
